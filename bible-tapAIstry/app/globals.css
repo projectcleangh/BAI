@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* OpenDyslexic font - loaded from CDN for accessibility */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Neon glows */
+  --glow-green: 0 0 20px rgba(0, 255, 135, 0.4), 0 0 40px rgba(0, 255, 135, 0.2);
+  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.2);
+  --glow-purple: 0 0 20px rgba(177, 78, 255, 0.4), 0 0 40px rgba(177, 78, 255, 0.2);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0A0A0F;
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Dyslexia-friendly mode */
+body.dyslexia-mode {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.12em;
+  word-spacing: 0.16em;
+  line-height: 1.8 !important;
+}
+
+body.dyslexia-mode * {
+  font-family: inherit !important;
+}
+
+body.dyslexia-mode h1,
+body.dyslexia-mode h2,
+body.dyslexia-mode h3,
+body.dyslexia-mode .word-reveal {
+  letter-spacing: 0.05em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #141419;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3a4a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a5a;
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-glow-green {
+    text-shadow: var(--glow-green);
+  }
+
+  .text-glow-gold {
+    text-shadow: var(--glow-gold);
+  }
+
+  .text-glow-purple {
+    text-shadow: var(--glow-purple);
+  }
+
+  .bg-split-yellow-black {
+    background: linear-gradient(90deg, #FFE500 50%, #0D0D0D 50%);
+  }
+
+  .bg-split-black-yellow {
+    background: linear-gradient(90deg, #0D0D0D 50%, #FFE500 50%);
+  }
+
+  /* Word reveal animation base */
+  .word-reveal {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    filter: blur(4px);
+    transition: all var(--transition-smooth);
+  }
+
+  .word-reveal.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  /* Hover lift effect for scripture */
+  .hover-lift {
+    transition: transform var(--transition-fast), text-shadow var(--transition-fast);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px) scale(1.02);
+    text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+
+  /* Panel styles */
+  .panel {
+    @apply bg-charcoal/50 backdrop-blur-sm border border-slate-dark/50 rounded-lg;
+  }
+
+  .panel-glow {
+    box-shadow: 0 0 40px rgba(0, 255, 135, 0.05);
+  }
+}
+
+/* Scripture text styling */
+.scripture-text {
+  font-size: 1.25rem;
+  line-height: 2;
+  color: #A0A0B0;
+}
+
+.scripture-text .verse-number {
+  font-size: 0.75rem;
+  color: #5A5A6A;
+  vertical-align: super;
+  margin-right: 0.25rem;
+  font-family: var(--font-mono);
+}
+
+body.dyslexia-mode .scripture-text {
+  font-size: 1.4rem;
+  line-height: 2.2;
+  max-width: 60ch;
+}
+
+/* Big declarative text (Daily Duppy style) */
+.declarative-text {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, #00FF87, #00FFFF);
+  box-shadow: 0 0 20px rgba(0, 255, 135, 0.5);
+  transition: width 100ms linear;
+}
+
+/* Disco ball shimmer */
+@keyframes disco-shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.disco-shimmer {
+  background: linear-gradient(
+    45deg,
+    #ffffff 0%,
+    #00FF87 25%,
+    #FFD700 50%,
+    #B14EFF 75%,
+    #ffffff 100%
+  );
+  background-size: 400% 400%;
+  animation: disco-shimmer 3s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Semantic image container */
+.semantic-image {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all var(--transition-slow);
+}
+
+.semantic-image.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.semantic-image.exit {
+  opacity: 0;
+  transform: scale(1.1);
+}
